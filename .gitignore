@@ -1,0 +1,9 @@
+.vscode
+dist
+*.log
+yarn.lock 
+
+node_modules/*
+node_modules/op.gg-api/node_modules/*
+!node_modules/op.gg-api/
+**/.idea/*
