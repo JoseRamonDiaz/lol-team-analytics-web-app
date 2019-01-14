@@ -1,5 +1,4 @@
-const cTable = require('console.table');
-var gg = new (require('op.gg-api/client'));
+var gg = new (require('@slayermx/lol/client'));
 let region = 'lan';
 
 async function getSummoners(summoners) {

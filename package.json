@@ -13,6 +13,7 @@
   "author": "Sandeep Raveesh",
   "license": "ISC",
   "dependencies": {
+    "@slayermx/lol": "^1.0.0",
     "babel-polyfill": "^6.26.0",
     "express": "^4.16.3",
     "multer": "^1.4.1",
