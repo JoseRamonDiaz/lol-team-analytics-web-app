@@ -103,6 +103,7 @@ function Champ(props) {
             <td>{props.name}</td>
             <td>{props.wins}</td>
             <td>{props.losses}</td>
+            <td>{props.winRatio}</td>
         </tr>
     );
 }
@@ -110,7 +111,7 @@ function Champ(props) {
 function Summoner(props) {
     const champs = props.champs;
     const champsList = champs.map((champ) =>
-        <Champ key={champ.name} name={champ.name} wins={champ.wins} losses={champ.losses} />
+        <Champ key={champ.name} name={champ.name} wins={champ.wins} losses={champ.losses} winRatio = {champ.winRatio}/>
     );
     return (
         <div>
@@ -121,6 +122,7 @@ function Summoner(props) {
                         <th>Champ</th>
                         <th>Wins</th>
                         <th>Losses</th>
+                        <th>WinRatio</th>
                     </tr>
                     {champsList}
                 </tbody>
