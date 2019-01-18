@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './app.css';
 
 export default class SummonersList extends Component {
     constructor(props) {
