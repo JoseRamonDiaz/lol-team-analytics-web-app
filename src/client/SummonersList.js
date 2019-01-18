@@ -80,14 +80,19 @@ export default class SummonersList extends Component {
         return (
             <div>
                 <div id="query">
-                    <form onSubmit={this.handleFindStats}>
-                        <textarea value={this.state.chatText} onChange={this.handleChatTextChange} rows="10" cols="50" placeholder="Insert yout chat text here"></textarea>
-                        <input value={this.state.summonerName} onChange={this.handleSummonerNameChange} type="text" placeholder="Insert yout summoner name here"></input>
-                        <input type="submit" value="Send"></input>
+                    <form onSubmit={this.handleFindStats} >
+                        <div class="form-group">
+                            <label for="chatText">Chat text</label>
+                            <textarea id="chatText" class="form-control" value={this.state.chatText} onChange={this.handleChatTextChange} rows="10" cols="50" placeholder="Insert yout chat text here"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="summonerName">Your summoner name</label>
+                            <input id="summonerName" class="form-control" value={this.state.summonerName} onChange={this.handleSummonerNameChange} type="text" placeholder="Insert yout summoner name here"></input>
+                        </div>
+                        <button class="btn btn-primary" type="submit" >Find</button>
                     </form>
                 </div>
                 <div id="result">
-                    <h1>Team</h1>
                     <div>
                         {listSummoners}
                     </div>
@@ -115,8 +120,9 @@ function Summoner(props) {
     );
     return (
         <div>
-            <table>
-                <tbody>
+            <br/>
+            <table class="table">
+                <thead>
                     <tr><th id="summoner-name">{props.name}</th></tr>
                     <tr>
                         <th>Champ</th>
@@ -124,6 +130,9 @@ function Summoner(props) {
                         <th>Losses</th>
                         <th>WinRatio</th>
                     </tr>
+                </thead>
+                <tbody>
+                    
                     {champsList}
                 </tbody>
             </table>

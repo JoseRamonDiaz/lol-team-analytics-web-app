@@ -1,8 +1,10 @@
 h1 {
-  color: green;
+  text-align: center;
 }
 
-body {
-  text-align: center;
+#root{
   margin: auto;
+  width: 400px;
+  border: 3px;
+  padding: 10px;
 }
