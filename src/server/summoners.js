@@ -1,7 +1,10 @@
 var gg = new (require('@slayermx/lol/client'));
 let region = 'lan';
+let season = 11;
 
-async function getSummoners(summoners) {
+async function getSummoners(summoners, passedRegion, passedSeason) {
+    region = passedRegion;
+    season = passedSeason;
     let teamSummoners = JSON.parse(summoners);
     let summonersObjectArray = [];
 
@@ -33,7 +36,7 @@ async function updateSummoners(teamSummoners) {
 }
 
 async function getChamps(region, summonerName) {
-    return await gg.Champions(region, summonerName, 11)
+    return await gg.Champions(region, summonerName, season)
         .then((champions) => {
             champions.sort(sortByPercentageDesc);
             let usefulChampStats = getUsefulStats(champions);

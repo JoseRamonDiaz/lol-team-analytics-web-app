@@ -32,8 +32,7 @@ app.get('/api/seasons', (req, resp) => {
 });
 
 app.post('/api/summoners/stats', upload.array(), (req, resp) => {
-    console.log(req.body.summoners);
-    summonersApi.getSummoners(req.body.summoners).then((summonersArray) => {
+    summonersApi.getSummoners(req.body.summoners, req.body.region, req.body.season).then((summonersArray) => {
         resp.json(summonersArray);
     });
 });

@@ -39,6 +39,8 @@ export default class SummonersList extends Component {
         var summonersArray = this.getSummoners();
         var data = new FormData();
         data.append("summoners", JSON.stringify(summonersArray));
+        data.append("season", this.state.selectedSeason);
+        data.append("region", this.state.selectedRegion);
 
         var myInit = {
             method: 'POST',
