@@ -3,23 +3,35 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
+function initComponents(self){
+    self.handleFindStats = self.handleFindStats.bind(self);
+    self.handleChatTextChange = self.handleChatTextChange.bind(self);
+    self.handleSummonerNameChange = self.handleSummonerNameChange.bind(self);
+    self.handleRegionChange = self.handleRegionChange.bind(self);
+    self.handleSeasonChange = self.handleSeasonChange.bind(self);
+    Region = Region.bind(self);
+    Season = Season.bind(self);
+}
+
 export default class SummonersList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             summonersList: [],
             regions: [],
+            seasons: [],
             selectedRegion: 'Regions',
+            selectedSeason: 'Seasons',
             chatText: '',
             summonerName: '',
         }
         fetch('api/regions').then(resp => resp.json())
         .then(fetchedRegions => this.setState({regions: fetchedRegions}));
-        this.handleFindStats = this.handleFindStats.bind(this);
-        this.handleChatTextChange = this.handleChatTextChange.bind(this);
-        this.handleSummonerNameChange = this.handleSummonerNameChange.bind(this);
-        this.handleRegionChange = this.handleRegionChange.bind(this);
-        Region = Region.bind(this);
+
+        fetch('api/seasons').then(resp=> resp.json())
+        .then(fetchedSeasons => this.setState({seasons: fetchedSeasons}));
+
+        initComponents(this);
         this.chatJoinText = " se unió a la sala";
     }
 
@@ -82,10 +94,20 @@ export default class SummonersList extends Component {
         event.preventDefault();
     }
 
+    handleSeasonChange(event){
+        this.setState({selectedSeason: event.target.innerText});
+        //this is added because button in form launchs the onsubmit
+        event.preventDefault();
+    }
+
     render() {
-        const summoners = this.state.summonersList;
         const regions = this.state.regions;
         const listRegions = regions.map((region) => <Region key={region} value={region}/>);
+
+        const seasons = this.state.seasons;
+        const listSeasons = seasons.map((season) => <Season key={season} value={season}/>);
+
+        const summoners = this.state.summonersList;
         const listSummoners = summoners.map((sumoner) =>
             <Summoner key={sumoner.name} name={sumoner.name} champs={sumoner.champs} />
         );
@@ -112,6 +134,16 @@ export default class SummonersList extends Component {
                                 </div>
                             </div>
                         </div>
+                        <div className="form-group">
+                            <div className="dropdown">
+                                <button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {this.state.selectedSeason}
+                                </button>
+                                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    {listSeasons}
+                                </div>
+                            </div>
+                        </div>
                         <button className="btn btn-primary" type="submit" >Find</button>
                     </form>
                 </div>
@@ -131,6 +163,11 @@ function Region(props){
     );
 }
 
+function Season(props){
+    return (
+        <button onClick={this.handleSeasonChange} className="dropdown-item">{props.value}</button>
+    );
+}
 
 function Champ(props) {
     return (
