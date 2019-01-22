@@ -8,19 +8,23 @@ export default class SummonersList extends Component {
         super(props);
         this.state = {
             summonersList: [],
+            regions: [],
+            selectedRegion: 'Regions',
             chatText: '',
             summonerName: '',
         }
+        fetch('api/regions').then(resp => resp.json())
+        .then(fetchedRegions => this.setState({regions: fetchedRegions}));
         this.handleFindStats = this.handleFindStats.bind(this);
         this.handleChatTextChange = this.handleChatTextChange.bind(this);
         this.handleSummonerNameChange = this.handleSummonerNameChange.bind(this);
+        this.handleRegionChange = this.handleRegionChange.bind(this);
+        Region = Region.bind(this);
         this.chatJoinText = " se unió a la sala";
     }
 
     handleFindStats(event) {
         var summonersArray = this.getSummoners();
-        console.log(summonersArray);
-
         var data = new FormData();
         data.append("summoners", JSON.stringify(summonersArray));
 
@@ -39,10 +43,8 @@ export default class SummonersList extends Component {
     getSummoners() {
         var summonersNamesArray = [];
         var lines = this.state.chatText.split(/\r*\n/);
-        console.log('text area lines: ' + lines.length);
 
         for (var i = 0; i < lines.length; i++) {
-            console.log('line ' + i + ' ' + lines[i]);
             if (this.isRoomJoinText(lines[i])) {
                 var summonerName = this.getSummonerName(lines[i]);
                 if(summonerName.toLowerCase() !== this.state.summonerName.toLowerCase()){
@@ -74,8 +76,16 @@ export default class SummonersList extends Component {
         this.setState({ summonerName: event.target.value });
     }
 
+    handleRegionChange(event){
+        this.setState({selectedRegion: event.target.innerText});
+        //this is added because button in form launchs the onsubmit
+        event.preventDefault();
+    }
+
     render() {
         const summoners = this.state.summonersList;
+        const regions = this.state.regions;
+        const listRegions = regions.map((region) => <Region key={region} value={region}/>);
         const listSummoners = summoners.map((sumoner) =>
             <Summoner key={sumoner.name} name={sumoner.name} champs={sumoner.champs} />
         );
@@ -84,15 +94,25 @@ export default class SummonersList extends Component {
             <div>
                 <div id="query">
                     <form onSubmit={this.handleFindStats} >
-                        <div class="form-group">
-                            <label for="chatText">Chat text</label>
-                            <textarea id="chatText" class="form-control" value={this.state.chatText} onChange={this.handleChatTextChange} rows="10" cols="50" placeholder="Insert yout chat text here"></textarea>
+                        <div className="form-group">
+                            <label htmlFor="chatText">Chat text</label>
+                            <textarea id="chatText" className="form-control" value={this.state.chatText} onChange={this.handleChatTextChange} rows="10" cols="50" placeholder="Insert yout chat text here"></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="summonerName">Your summoner name</label>
-                            <input id="summonerName" class="form-control" value={this.state.summonerName} onChange={this.handleSummonerNameChange} type="text" placeholder="Insert yout summoner name here"></input>
+                        <div className="form-group">
+                            <label htmlFor="summonerName">Your summoner name</label>
+                            <input id="summonerName" className="form-control" value={this.state.summonerName} onChange={this.handleSummonerNameChange} type="text" placeholder="Insert yout summoner name here"></input>
                         </div>
-                        <button class="btn btn-primary" type="submit" >Find</button>
+                        <div className="form-group">
+                            <div className="dropdown">
+                                <button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {this.state.selectedRegion}
+                                </button>
+                                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    {listRegions}
+                                </div>
+                            </div>
+                        </div>
+                        <button className="btn btn-primary" type="submit" >Find</button>
                     </form>
                 </div>
                 <div id="result">
@@ -104,6 +124,13 @@ export default class SummonersList extends Component {
         );
     }
 }
+ 
+function Region(props){
+    return (
+        <button onClick={this.handleRegionChange} className="dropdown-item">{props.value}</button>
+    );
+}
+
 
 function Champ(props) {
     return (
