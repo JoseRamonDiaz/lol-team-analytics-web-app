@@ -15,5 +15,7 @@ function getSeasons(){
 
 module.exports = {
     getRegions, 
-    getSeasons
+    getSeasons, 
+    regions, 
+    seasons
 }

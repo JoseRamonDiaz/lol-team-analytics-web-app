@@ -75,5 +75,7 @@ function sortByPercentageDesc(championA, championB) {
 }
 
 module.exports = {
-    getSummoners
+    getSummoners,
+    sortByPercentageDesc,
+    getUsefulStats
 }
