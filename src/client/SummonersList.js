@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+const chatTextParser = require('./chat-text-parser');
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
@@ -32,11 +33,10 @@ export default class SummonersList extends Component {
         .then(fetchedSeasons => this.setState({seasons: fetchedSeasons}));
 
         initComponents(this);
-        this.chatJoinText = " se unió a la sala";
     }
 
     handleFindStats(event) {
-        var summonersArray = this.getSummoners();
+        var summonersArray = chatTextParser.getSummoners(this.state.chatText, this.state.summonerName);
         var data = new FormData();
         data.append("summoners", JSON.stringify(summonersArray));
         data.append("season", this.state.selectedSeason);
@@ -52,34 +52,6 @@ export default class SummonersList extends Component {
             .then(newSummonersList => this.setState({ summonersList: newSummonersList }));
 
         event.preventDefault();
-    }
-
-    getSummoners() {
-        var summonersNamesArray = [];
-        var lines = this.state.chatText.split(/\r*\n/);
-
-        for (var i = 0; i < lines.length; i++) {
-            if (this.isRoomJoinText(lines[i])) {
-                var summonerName = this.getSummonerName(lines[i]);
-                if(summonerName.toLowerCase() !== this.state.summonerName.toLowerCase()){
-                    summonersNamesArray.push(summonerName);
-                }
-            }
-        }
-
-        return summonersNamesArray;
-    }
-
-    getSummonerName(line) {
-        return line.replace(this.chatJoinText, '');
-    }
-
-    isRoomJoinText(line) {
-
-        if (line.indexOf(this.chatJoinText) > -1) {
-            return true;
-        }
-        return false;
     }
 
     handleChatTextChange(event) {
