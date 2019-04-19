@@ -157,12 +157,13 @@ function Champ(props) {
 function Summoner(props) {
     const champs = props.champs;
     let champsList ;
+    let no_data_message;
     if(champs.length > 0){
         champsList = champs.map((champ) =>
             <Champ key={champ.name} name={champ.name} wins={champ.wins} losses={champ.losses} winRatio = {champ.winRatio}/>
         );
     }else{
-        champsList = 'No ranked game data'; 
+        no_data_message = 'No ranked game data'; 
     }
     
     return (
@@ -180,6 +181,7 @@ function Summoner(props) {
                 </thead>
                 <tbody>
                     {champsList}
+                    <td colSpan="4">{no_data_message}</td>
                 </tbody>
             </table>
         </div>
