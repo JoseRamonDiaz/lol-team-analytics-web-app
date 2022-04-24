@@ -7,4 +7,4 @@ Find summoner's champs info
 * run "git reset --hard" 
 * run "npm install console.table --save"
 
-The magic its done
+The magic is done
